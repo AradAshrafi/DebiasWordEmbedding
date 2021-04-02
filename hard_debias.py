@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.decomposition import PCA
 import json
-from utils import load_embedding
+from utils import load_embedding, normalize, recreate_embedding
 
 
 def calculate_mu(set_of_pairs, word_vectors, word_indices):
@@ -39,7 +39,7 @@ def calculate_gender_direction(set_of_pairs, mu_list, word_vectors, word_indices
 
 def hard_debias(path_to_embedding="Double-Hard Debias/embeddings/glove.txt",
                 path_to_def_pairs="Hard Debias/Data/definitional_pairs.json"):
-    word_vectors, word_indices, _ = load_embedding(path_to_embedding)
+    word_vectors, word_indices, vocab = load_embedding(path_to_embedding)
     word_vectors = np.asarray(word_vectors)
 
     with open(path_to_def_pairs) as f:
@@ -53,4 +53,5 @@ def hard_debias(path_to_embedding="Double-Hard Debias/embeddings/glove.txt",
     for i in range(len(word_vectors)):
         word_vectors[i] = word_vectors[i] - np.dot(word_vectors[i], gender_direction) * gender_direction
 
-    return word_vectors  # Hard Debiased embeddings
+    word_vectors = normalize(word_vectors)
+    recreate_embedding(word_vectors, vocab, "hard_debias")
