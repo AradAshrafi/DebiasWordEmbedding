@@ -56,3 +56,43 @@ def normalize(word_vectors):
     normalized_word_vectors = word_vectors / norms
 
     return normalized_word_vectors
+
+def decentralize(word_vectors):
+    """Given an array of word vectors, return an array of those
+    vectors decentralized, ie. subtract the average vector from
+    each vector.
+
+    Input: m by n array of word vectors
+
+    Output: m by n array of word vectors
+    """
+
+    # calculate average vector for array of word vectors
+    mean_vector = np.mean(word_vectors, axis=0)
+
+    # create decentralized word vectors by subtracting mean from each vector
+    decentralized_word_vectors = word_vectors - mean_vector
+
+    return decentralized_word_vectors
+
+def load_word_list(filepath, vocab):
+    """Create array of words, usually some subset of the total vocabulary
+    that is needed for identifying gender or testing bias.
+
+    Input: filepath to file with one word per line
+
+    Output: array of strings
+    """
+
+    # read in and clean all words from file
+    word_file = open(filepath)
+    words = word_file.readlines()
+    words = [word.strip() for word in words]
+
+    # only keep words that exist in our vocabulary
+    kept_words = []
+    for word in words:
+        if word in vocab:
+            kept_words.append(word)
+
+    return kept_words
