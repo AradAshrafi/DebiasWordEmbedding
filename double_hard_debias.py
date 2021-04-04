@@ -142,4 +142,4 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
     
     print('Complete')
 
-    return word_vectors_debiased
+    return word_vectors_debiased, word_indexes, vocab

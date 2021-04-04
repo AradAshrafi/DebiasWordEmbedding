@@ -37,8 +37,8 @@ def calculate_gender_direction(set_of_pairs, mu_list, word_vectors, word_indices
     return gender_subspace
 
 
-def hard_debias(path_to_embedding="Double-Hard Debias/embeddings/glove.txt",
-                path_to_def_pairs="Hard Debias/Data/definitional_pairs.json"):
+def hard_debias(path_to_embedding="data/glove.txt",
+                path_to_def_pairs="data/definitional_pairs.json"):
     word_vectors, word_indices, vocab = load_embedding(path_to_embedding)
     word_vectors = np.asarray(word_vectors)
 
