@@ -72,7 +72,6 @@ def discover_freq_dir(male_words, female_words, gender_direction,
         correct = [1 if a == b else 0 for (a, b) in zip(targets, predictions)]
         precision = max(sum(correct)/float(len(correct)), 1 - sum(correct)/float(len(correct)))
         S_debias.append(precision)
-        print(precision)
 
     # the frequency principal component is the one that corresponds to the worst
     # performance on the clustering test
@@ -143,4 +142,4 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
     
     print('Complete')
 
-    return word_vectors_debiased
+    return word_vectors_debiased, word_indexes, vocab
