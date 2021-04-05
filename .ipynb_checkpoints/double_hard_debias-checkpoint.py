@@ -3,6 +3,8 @@ from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from utils import *
 from hard_debias import *
+from cluster import compute_word_bias
+import codecs
 
 def get_components(word_vectors, num_components=20):
     """Given an array of word vectors, return the principal components
@@ -72,6 +74,7 @@ def discover_freq_dir(male_words, female_words, gender_direction,
         correct = [1 if a == b else 0 for (a, b) in zip(targets, predictions)]
         precision = max(sum(correct)/float(len(correct)), 1 - sum(correct)/float(len(correct)))
         S_debias.append(precision)
+        print(precision)
 
     # the frequency principal component is the one that corresponds to the worst
     # performance on the clustering test
@@ -79,7 +82,7 @@ def discover_freq_dir(male_words, female_words, gender_direction,
     return i, principal_comps[i]
 
 def double_hard_debias(embedding_filepath, male_word_filepath, 
-                       female_word_filepath, gender_pair_filepath):
+                       female_word_filepath, gender_specific_filepath, gender_pair_filepath):
     """Performs the double-hard debias algorithm on a given word embedding.
 
     Input: filepath to word embedding,
@@ -93,9 +96,20 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
 
     # load word embedding and gender specific words
     word_vectors, word_indexes, vocab = load_embedding(embedding_filepath)
-    male_words = load_word_list(male_word_filepath, vocab)
-    female_words = load_word_list(female_word_filepath, vocab)
     set_of_pairs = load_def_pairs(gender_pair_filepath)
+    
+    # limit vocab by excluding words that 'should' have gender bias
+    gender_specific = []
+
+    with open(male_word_filepath) as f:
+        for l in f:
+            gender_specific.append(l.strip())
+    with open(female_word_filepath) as f:
+        for l in f:
+            gender_specific.append(l.strip())
+
+    with codecs.open(gender_specific_filepath) as f:
+        gender_specific.extend(json.load(f))   
 
     print('Word files loaded')
 
@@ -104,6 +118,16 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
     word_vectors = normalize(word_vectors)
 
     print('Word vectors decentralized and normalized')
+    
+    # find most male and female biased words from limited vocabulary
+    vocab_limited, wv_limited, wi_limited = limit_vocab(word_vectors, word_indexes, vocab, exclude=gender_specific)
+    he_vector = word_vectors[word_indexes['he'], :]
+    she_vector = word_vectors[word_indexes['she'], :]
+    biased_words = compute_word_bias(wv_limited, wi_limited, vocab_limited, he_vector, she_vector)
+    biased_male = [pair[0] for pair in biased_words[-1000:]]
+    biased_female = [pair[0] for pair in biased_words[1000:]]
+    
+    print('Most gender biased words found')
 
     # compute principal components
     U = get_components(word_vectors)
@@ -118,7 +142,7 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
     print('Gender direction found')
 
     # discover the frequency direction
-    i, u = discover_freq_dir(male_words, female_words, gender_direction, U, word_vectors, word_indexes)
+    i, u = discover_freq_dir(biased_male, biased_female, gender_direction, U, word_vectors, word_indexes)
 
     print('Frequency direction discovered, U[{}]'.format(i))
 
@@ -133,10 +157,6 @@ def double_hard_debias(embedding_filepath, male_word_filepath,
     word_vectors_debiased = hard_debias2(word_vectors_prime, gender_direction)
 
     print('Gender direction removed')
-    
-    word_vectors_debiased = normalize(word_vectors_debiased)
-    
-    print('Word vectors normalized')
     
     
     

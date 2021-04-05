@@ -2,7 +2,7 @@ from utils import extract_vectors, load_embedding, similarity, simi
 from sklearn.cluster import KMeans
 import operator
 from hard_debias import hard_debias
-from double_hard_debias import double_hard_debias
+#from double_hard_debias import double_hard_debias
 
 def cluster(words, X1, random_state, y_true, num=2):
     
