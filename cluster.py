@@ -1,4 +1,4 @@
-from utils import extract_vectors, load_embedding, similarity
+from utils import extract_vectors, load_embedding, similarity, simi
 from sklearn.cluster import KMeans
 import operator
 from hard_debias import hard_debias
@@ -24,7 +24,7 @@ def my_cluster(wv, w2i,random_state,vocab, words_sorted, num_biased_words=100):
 	cluster(male + female, extract_vectors(male + female, wv, w2i), random_state, y_true)
 
 
-def compute_word_bias(wv, w2i, vocab):
+def compute_word_bias(wv, w2i, vocab, he, she):
     """For each word in the vocabularly, compute bias as the difference between
     cosine similarity to the 'he' word vector and cosine similarity to the 'she'
     word vector. Return sorted list of words by bias.
@@ -35,7 +35,8 @@ def compute_word_bias(wv, w2i, vocab):
     
     # for each word in vocab, calculate bias
     for word in vocab:
-        d[word] = similarity(word, 'he', wv, w2i) - similarity(word, 'she', wv, w2i)
+        v = wv[w2i[word], :]
+        d[word] = simi(v, he) - simi(v, she)
     
     # sort words by bias, positive bias is male leaning, negative bias female leaning
     words_sorted = sorted(d.items(), key=operator.itemgetter(1))
@@ -49,7 +50,7 @@ def test():
     for n in [100, 500, 1000]:
         my_cluster(glv, glv_w2i, 1, glv_vocab, words_sorted, n)
 
-    #hard_debias() # Uncomment to create the hard_debias word vector embedding
+    hard_debias() # Uncomment to create the hard_debias word vector embedding
     hd_glv, hd_glv_w2i, hd_glv_vocab = load_embedding("hard_debias.txt")
     
     for n in [100, 500, 1000]:
@@ -65,4 +66,4 @@ def test():
     for n in [100, 500, 1000]:
         my_cluster(dbl_glv, dbl_w2i, 1, dbl_vocab, words_sorted)
 
-test()
+#test()

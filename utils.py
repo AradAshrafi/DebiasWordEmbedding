@@ -2,6 +2,8 @@ import numpy as np
 import json
 from scipy.spatial import distance 
 import itertools
+import string
+
 
 WEAT_words = {
 'A':['John', 'Paul', 'Mike', 'Kevin', 'Steve', 'Greg', 'Jeff', 'Bill'], 
@@ -22,6 +24,9 @@ def similarity(w1, w2, wv, w2i):
     vec2 = wv[i2, :]
 
     return 1-(distance.cosine(vec1, vec2))
+
+def simi(a, b):
+    return 1 - distance.cosine(a, b)
 
 def association_diff(t, A, B, wv, w2i):
     
@@ -222,3 +227,46 @@ def load_def_pairs(filepath):
         set_of_pairs = json.load(f)
     
     return set_of_pairs
+
+def has_punct(w):
+    
+    if any([c in string.punctuation for c in w]):
+        return True
+    return False
+
+def has_digit(w):
+    
+    if any([c in '0123456789' for c in w]):
+        return True
+    return False
+
+def limit_vocab(wv, w2i, vocab, exclude = None):
+    vocab_limited = []
+    for w in vocab[:50000]: 
+        if w.lower() != w:
+            continue
+        if len(w) >= 20:
+            continue
+        if has_digit(w):
+            continue
+        if '_' in w:
+            p = [has_punct(subw) for subw in w.split('_')]
+            if not any(p):
+                vocab_limited.append(w)
+            continue
+        if has_punct(w):
+            continue
+        vocab_limited.append(w)
+    
+    if exclude:
+        vocab_limited = list(set(vocab_limited) - set(exclude))
+    
+    print("size of vocabulary:", len(vocab_limited))
+    
+    wv_limited = np.zeros((len(vocab_limited), len(wv[0, :])))
+    for i,w in enumerate(vocab_limited):
+        wv_limited[i,:] = wv[w2i[w],:]
+    
+    w2i_limited = {w: i for i, w in enumerate(vocab_limited)}
+    
+    return vocab_limited, wv_limited, w2i_limited
