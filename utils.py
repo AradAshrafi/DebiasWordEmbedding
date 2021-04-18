@@ -3,7 +3,8 @@ import json
 from scipy.spatial import distance 
 import itertools
 import string
-
+import gensim
+from gensim.models import KeyedVectors
 
 WEAT_words = {
 'A':['John', 'Paul', 'Mike', 'Kevin', 'Steve', 'Greg', 'Jeff', 'Bill'], 
@@ -15,6 +16,16 @@ WEAT_words = {
 'G':['science', 'technology', 'physics', 'chemistry', 'einstein', 'nasa', 'experiment', 'astronomy'],
 'H':['poetry', 'art', 'shakespeare', 'dance', 'literature', 'novel', 'symphony', 'drama'],
 }
+
+def load_w2v(file_path):
+    model =KeyedVectors.load_word2vec_format(file_path, binary=True)
+    vocab = sorted([w for w in model.vocab], key=lambda w: model.vocab[w].index)
+    w2i = {w: i for i, w in enumerate(vocab)}
+    wv = [model[w] for w in vocab]
+    wv = np.array(wv)
+    print(len(vocab), wv.shape, len(w2i))
+    
+    return wv, w2i, vocab
 
 def similarity(w1, w2, wv, w2i):
     
