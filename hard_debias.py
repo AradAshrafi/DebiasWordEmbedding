@@ -37,6 +37,25 @@ def calculate_gender_direction(set_of_pairs, mu_list, word_vectors, word_indices
     return gender_subspace
 
 
+def hard_debias_w2v(word_vectors, word_indices, vocab,
+                path_to_def_pairs="data/definitional_pairs.json"):
+    word_vectors = np.asarray(word_vectors)
+
+    with open(path_to_def_pairs) as f:
+        set_of_pairs = json.load(f)
+
+    mu_list = calculate_mu(set_of_pairs, word_vectors, word_indices)
+    gender_subspace = calculate_gender_direction(set_of_pairs, mu_list, word_vectors, word_indices, num_components=1)
+    gender_direction = gender_subspace[0]
+
+    ### Subtracting Gender Bias from each Word Vector
+    for i in range(len(word_vectors)):
+        word_vectors[i] = word_vectors[i] - np.dot(word_vectors[i], gender_direction) * gender_direction
+
+    word_vectors = normalize(word_vectors)
+    # recreate_embedding(word_vectors, vocab, "hard_debias_w2v")
+    return word_vectors
+
 def hard_debias(path_to_embedding="data/glove.txt",
                 path_to_def_pairs="data/definitional_pairs.json"):
     word_vectors, word_indices, vocab = load_embedding(path_to_embedding)
