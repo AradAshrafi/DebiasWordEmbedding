@@ -29,6 +29,7 @@ The implementation of three different algorithms alongwith Evaluations on Word2V
 * [double_hard_debias.py](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/double_hard_debias.py): Implementation of double hard debias. Instruction on running it is similar to above.
 * [evolutionary_algorithm.ipynb](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/evolutionary_algorithm.ipynb): Implementation of evolutionary debias. Instruction on running it is inside the jupyter notebook itself.
 * [Glove Evaluation](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/Evaluation/evaluation_GloVe.ipynb): A Jupyter notebook which contains the result of the Evaluation process on Glove embedding.
+* [Word2Vec Evaluation](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/Evaluation/evaluation_w2v.ipynb): A Jupyter notebook which contains the result of the Evaluation process on word2vec embeddings.
 * Results of running our Evolutionary algorithm in different scenarios could be find in the Jupyter notebooks starting with "evolutionary_algorithm" and "ea" located in the root directory.
 
 #### Requirements
