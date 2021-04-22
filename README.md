@@ -31,6 +31,12 @@ The implementation of three different algorithms alongwith Evaluations on Word2V
 * [Glove Evaluation](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/Evaluation/evaluation_GloVe.ipynb): A Jupyter notebook which contains the result of the Evaluation process on Glove embedding.
 * Results of running our Evolutionary algorithm in different scenarios could be find in the Jupyter notebooks starting with "evolutionary_algorithm" and "ea" located in the root directory.
 
+#### Requirements
+
+Several evaluation tests rely on installing and importing the Word Embedding Benchmarks repository.
+
+[Word Embedding Benchmarks](https://github.com/kudkudak/word-embeddings-benchmarks)
+
 ## References
 
 [1] T. Bolukbasi, K.-W. Chang, J. Y. Zou, V. Saligrama, and A. T. Kalai, “Man is to computer
