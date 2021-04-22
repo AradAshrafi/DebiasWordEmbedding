@@ -3,3 +3,4 @@ env/
 *.pyc
 *.idea
 ./data
+.DS_Store
