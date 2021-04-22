@@ -166,7 +166,7 @@ def load_embedding(filepath):
 
 
 def recreate_embedding(word_vectors, vocab, new_embedding_name="hard_debais"):
-  with open(new_embedding_name + ".txt", "w") as text_file:
+  with open("./data/" + new_embedding_name + ".txt", "w") as text_file:
     for i in range(len(vocab)):
       text_file.write(vocab[i]+ " ")
       text_file.write(' '.join([str(element) for element in word_vectors[i]]) + '\n')
