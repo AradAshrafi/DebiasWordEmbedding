@@ -22,7 +22,14 @@ Work's done in this repo:
 - [x] Implementation of our novel Evolutionary Strategy algorithm
 - [x] Evaluation of our debiased embeddings based on 4 different metrics
 
+#### Repository's Details
 
+The implementation of three different algorithms alongwith Evaluations on Word2Vec and Glove could be find in this repo.
+* [hard_debias.py](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/hard_debias.py): Implementation of hard debias. By running hard_debias function and giving its necessary inputs it will do the job.
+* [double_hard_debias.py](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/double_hard_debias.py): Implementation of double hard debias. Instruction on running it is similar to above.
+* [evolutionary_algorithm.ipynb](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/evolutionary_algorithm.ipynb): Implementation of evolutionary debias. Instruction on running it is inside the jupyter notebook itself.
+* [Glove Evaluation](https://github.com/AradAshrafi/DebiasWordEmbedding/blob/main/Evaluation/evaluation_GloVe.ipynb): A Jupyter notebook which contains the result of the Evaluation process on Glove embedding.
+* Results of running our Evolutionary algorithm in different scenarios could be find in the Jupyter notebooks starting with "evolutionary_algorithm" and "ea" located in the root directory.
 
 ## References
 
