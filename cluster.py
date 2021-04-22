@@ -10,6 +10,7 @@ def cluster(words, X1, random_state, y_true, num=2):
 	y_pred_1 = kmeans_1.predict(X1)
 	correct = [1 if item1 == item2 else 0 for (item1,item2) in zip(y_true, y_pred_1) ]
 	print('precision', max(sum(correct)/float(len(correct)), 1 - sum(correct)/float(len(correct))))
+	return max(sum(correct)/float(len(correct)), 1 - sum(correct)/float(len(correct)))
 
 
 # Cluster most biased words before and after debiasing
@@ -21,7 +22,8 @@ def my_cluster(wv, w2i,random_state,vocab, words_sorted, num_biased_words=100):
 	female = [pair[0] for pair in words_sorted[:num_biased_words]]
 
 	y_true = [1]*len(male) + [0]*len(female)
-	cluster(male + female, extract_vectors(male + female, wv, w2i), random_state, y_true)
+	precision = cluster(male + female, extract_vectors(male + female, wv, w2i), random_state, y_true)
+	return precision
 
 
 def compute_word_bias(wv, w2i, vocab, he, she):
