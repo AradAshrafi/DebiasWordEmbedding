@@ -1,7 +1,19 @@
-### Mitigating Gender Bias from Word Embedding
+## Mitigating Gender Bias from Word Embedding
 
-In this project we did a re-implementation of Hard Debias Algorithm and Double-Hard Debias Algorithm ([1], [2]).
-These algorithms use some hand-engineered rules based on their authors' intuition to solve the bias issue in the embeddings.
+#### What it this task about? Why it is important?
+Fairness in machine learning systems has been recently attracting much attention from academic researchers, industry, and the public. An important aspect of fairness in machine learning is bias in the machine learning models. This bias can arise due to both the data and algorithms
+
+Word embeddings will map each word into a vector space in order to make it usable for further text analysis and machine learning algorithms. These vector representations encode meaning and hold the semantic information of words so that words with similar meanings are close to each other in the vector space and the differences between these embeddings represent relationships between words. However, word embeddings are biased because they are trained on text corpora that contain direct and indirect human biases. We focus on mitigating one particular type of bias: gender bias. 
+
+Word embeddings tend to maintain the gender stereotypes that pervade language and this bias can be magnified when machine learning models are trained using these word embeddings and then applied to downstream tasks.
+
+&nbsp; </br>
+&nbsp; </br>
+&nbsp; </br>
+
+#### What is done?
+In this project we did a re-implementation of Hard Debias Algorithm and Double-Hard Debias Algorithm ([1], [2]). Those algorithms deal with gender bias and proposed some novel approaches to address that.
+Hard Debias and Double Hard Debias algorithms use some hand-engineered rules based on their authors' intuition to solve the bias issue in the embeddings.
 We came up with a novel idea of applying Evolutionary Algorithm to tackle this issue. 
 
 Work's done in this repo:
@@ -12,7 +24,7 @@ Work's done in this repo:
 
 
 
-##References
+## References
 
 [1] T. Bolukbasi, K.-W. Chang, J. Y. Zou, V. Saligrama, and A. T. Kalai, “Man is to computer
 programmer as woman is to homemaker? debiasing word embeddings,” in Advances in
